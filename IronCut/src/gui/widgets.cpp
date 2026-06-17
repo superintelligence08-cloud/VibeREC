@@ -2,6 +2,9 @@
 #include "clip.h"
 #include "timeline.h"
 
+// GLFW - must come first before any OpenGL headers
+#include <GLFW/glfw3.h>
+
 // Dear ImGui
 #include "imgui.h"
 
@@ -121,10 +124,9 @@ void TimelineWidget::render(Timeline& timeline, int selectedTrack, int selectedC
     // Handle input
     handleInput(timeline, cursorPos.x, tracksY);
     
-    // Scrollbar
+    // Scrollbar - use ImGui native scrolling instead
     ImGui::SetCursorScreenPos(ImVec2(cursorPos.x, tracksY));
-    ImGui::ScrollbarHorizontal(ImGui::GetID("TimelineScroll"));
-    m_scrollOffset = -ImGui::GetScrollX();
+    // m_scrollOffset is updated via handleInput
 }
 
 void TimelineWidget::renderTrack(const VideoTrack& track, int trackIndex, float y, float height) {
@@ -147,8 +149,8 @@ void TimelineWidget::renderTrack(const VideoTrack& track, int trackIndex, float 
     // Render clips
     for (size_t i = 0; i < track.clips.size(); ++i) {
         const Clip& clip = *track.clips[i];
-        float clipX = cursorPos.x + m_scrollOffset + clip.startTime * pixelsPerSecond;
-        float clipWidth = clip.duration * pixelsPerSecond;
+        float clipX = cursorPos.x + m_scrollOffset + clip.getStartTime().seconds() * pixelsPerSecond;
+        float clipWidth = clip.getDuration().seconds() * pixelsPerSecond;
         
         if (clipX + clipWidth > cursorPos.x && clipX < cursorPos.x + availWidth) {
             bool isSelected = false; // Would need to pass selected clip info
@@ -169,7 +171,7 @@ void TimelineWidget::renderClip(const Clip& clip, float x, float y, float width,
     drawList->AddRect(ImVec2(x, y), ImVec2(x + width, y + height), borderColor, 4.0f, 0, 2.0f);
     
     // Clip name
-    std::string displayName = clip.sourcePath;
+    std::string displayName = clip.getFilePath();
     if (displayName.length() > 20) {
         displayName = displayName.substr(0, 17) + "...";
     }
@@ -177,7 +179,7 @@ void TimelineWidget::renderClip(const Clip& clip, float x, float y, float width,
     
     // Duration
     char durationStr[32];
-    snprintf(durationStr, sizeof(durationStr), "%.2fs", clip.duration);
+    snprintf(durationStr, sizeof(durationStr), "%.2fs", clip.getDuration().seconds());
     drawList->AddText(ImVec2(x + 5, y + height - 15), IM_COL32(200, 200, 200, 255), durationStr);
     
     // Resize handles
