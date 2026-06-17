@@ -1,82 +1,48 @@
 ```
-# Build artifacts
+# Compiled and build artifacts
 *.o
 *.obj
-*.a
-*.lib
-*.so
-*.dll
 *.exe
+*.dll
+*.so
+*.a
 *.out
 build/
 dist/
 
 # Dependencies
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
+venv/
+.venv/
+node_modules/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
 
-# IDE
-.vscode/
-.idea/
+# Logs and temp files
+*.log
+*.tmp
 *.swp
 *.swo
-
-# Logs
-*.log
-
-# Temp files
-*.tmp
-*~
 
 # Environment
 .env
 .env.local
 *.env.*
 
+# Editors
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db
+
 # Coverage
 coverage/
 htmlcov/
 .coverage
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Package management
-node_modules/
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-venv/
-env/
-ENV/
-.venv/
-env.bak/
-venv.bak/
-
-# Testing
-.pytest_cache/
-.mypy_cache/
-.nox/
-.tox/
-
-# Gradle
-.gradle/
-build/
-
-# Rust
-target/
-
-# Julia
-julia-*/
-
-# Zig
-zig-cache/
-zig-out/
 
 # Compressed files
 *.zip

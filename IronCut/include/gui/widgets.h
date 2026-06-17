@@ -8,10 +8,11 @@
 
 struct GLFWwindow;
 
-namespace IronCut {
+// Dear ImGui forward declarations
+struct ImDrawList;
+struct ImDrawCmd;
 
-// Forward declarations for Dear ImGui
-typedef void (*ImDrawCallback)(const struct ImDrawList* cmd_list, const struct ImDrawCmd* cmd);
+namespace IronCut {
 
 class TimelineWidget {
 public:
@@ -64,6 +65,8 @@ private:
 
 class PropertiesPanel {
 public:
+    PropertiesPanel();
+    ~PropertiesPanel();
     void render(Clip* selectedClip);
     void onPropertyChange(std::function<void()> callback);
     
